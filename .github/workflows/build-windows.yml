@@ -1,0 +1,54 @@
+name: Build Windows app
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run dist:win
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: |
+            dist/BgRemover-Setup-*.exe
+            dist/BgRemover-Portable-*.exe
+          if-no-files-found: error
+
+      - name: Read version
+        id: version
+        shell: bash
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: 無損自動去背 v${{ steps.version.outputs.version }}
+          body: |
+            Windows 版下載：
+            - **BgRemover-Setup-${{ steps.version.outputs.version }}.exe**：安裝版，會在桌面建立「無損自動去背」捷徑（推薦）
+            - **BgRemover-Portable-${{ steps.version.outputs.version }}.exe**：免安裝版，雙擊即可執行
+
+            AI 模型已內建，可完全離線使用。
+          files: |
+            dist/BgRemover-Setup-*.exe
+            dist/BgRemover-Portable-*.exe
+          overwrite_files: true
