@@ -1,0 +1,23 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "無損自動去背工具：在瀏覽器本機執行 AI 去背，輸出原尺寸無損 PNG",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/main.js --bundle --format=esm --minify --target=es2020 --outfile=app.js",
+    "serve": "npx --yes http-server -p 8080 -c-1 ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Knucklesssss/my-app.git"
+  },
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@imgly/background-removal": "1.4.5",
+    "fast-png": "^8.0.0",
+    "fflate": "^0.8.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
