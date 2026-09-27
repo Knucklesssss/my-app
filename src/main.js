@@ -6,6 +6,11 @@ import { zipSync } from 'fflate';
 // self-hosted copy of @imgly/background-removal-data instead.
 const params = new URLSearchParams(location.search);
 const publicPath = params.get('data') || undefined;
+const bundledModel = publicPath?.startsWith('app:'); // desktop build ships the model
+if (bundledModel) {
+  document.querySelector('#modelnote').textContent = '模型已內建，可離線使用。';
+  for (const opt of document.querySelectorAll('#model option')) opt.textContent = opt.textContent.replace(/（.*）/, '');
+}
 
 // Keep one config object per model: the library memoizes sessions by config.
 const configs = {};
@@ -46,7 +51,9 @@ function onProgress(key, current, total) {
   for (const [c, t] of Object.values(downloads)) { done += c; all += t; }
   if (all > 0) {
     const pct = Math.min(100, Math.round((done / all) * 100));
-    setStatus(`首次使用，下載 AI 模型中… ${pct}%（${mb(done)} / ${mb(all)} MB，之後會快取）`, pct);
+    setStatus(bundledModel
+      ? `載入 AI 模型中… ${pct}%`
+      : `首次使用，下載 AI 模型中… ${pct}%（${mb(done)} / ${mb(all)} MB，之後會快取）`, pct);
   }
 }
 const mb = (n) => (n / 1048576).toFixed(1);

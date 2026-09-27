@@ -13,7 +13,18 @@
 
 ## 使用方式
 
-### 方法一：GitHub Pages（推薦，手機電腦都能直接開）
+### Windows 桌面版（推薦電腦使用）
+
+到 [Releases](https://github.com/Knucklesssss/my-app/releases) 下載：
+
+- **BgRemover-Setup-x.x.x.exe**：安裝版。安裝後桌面會出現「無損自動去背」捷徑。
+- **BgRemover-Portable-x.x.x.exe**：免安裝版，雙擊就能執行。
+
+AI 模型已內建，不用連網。因為程式沒有數位簽章，第一次執行時 Windows 可能跳出「Windows 已保護您的電腦」，按「其他資訊 → 仍要執行」即可。
+
+每次推送程式碼，GitHub Actions 都會自動重新打包（見 `.github/workflows/build-windows.yml`）。
+
+### 網頁版：GitHub Pages（手機電腦都能直接開）
 
 1. 到倉庫的 **Settings → Pages**
 2. Source 選 **Deploy from a branch**，Branch 選 `main`，資料夾選 `/ (root)`，按 Save
@@ -41,6 +52,8 @@ npm run serve
 npm install
 npm run build
 ```
+
+桌面版：`npm run desktop` 直接啟動，`npm run dist:win` 打包 Windows 安裝檔（輸出到 `dist/`）。
 
 ## 授權
 

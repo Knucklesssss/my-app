@@ -1,23 +1,54 @@
 {
   "name": "my-app",
+  "productName": "無損自動去背",
   "version": "1.0.0",
-  "description": "無損自動去背工具：在瀏覽器本機執行 AI 去背，輸出原尺寸無損 PNG",
+  "description": "無損自動去背工具：在本機執行 AI 去背，輸出原尺寸無損 PNG",
+  "author": "Knucklesssss",
   "private": true,
+  "main": "electron/main.cjs",
   "scripts": {
     "build": "esbuild src/main.js --bundle --format=esm --minify --target=es2020 --outfile=app.js",
-    "serve": "npx --yes http-server -p 8080 -c-1 ."
+    "serve": "npx --yes http-server -p 8080 -c-1 .",
+    "prepare-model": "node scripts/prepare-model.mjs",
+    "desktop": "npm run build && npm run prepare-model && electron .",
+    "dist:win": "npm run build && npm run prepare-model && electron-builder --win --x64 --publish never"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Knucklesssss/my-app.git"
   },
   "license": "AGPL-3.0",
-  "dependencies": {
-    "@imgly/background-removal": "1.4.5",
-    "fast-png": "^8.0.0",
-    "fflate": "^0.8.3"
-  },
   "devDependencies": {
+    "@imgly/background-removal": "1.4.5",
+    "@imgly/background-removal-data": "1.4.5",
+    "fast-png": "^8.0.0",
+    "fflate": "^0.8.3",
+    "electron": "^38.8.6",
+    "electron-builder": "^26.15.3",
     "esbuild": "^0.28.2"
+  },
+  "build": {
+    "appId": "com.knucklesssss.bgremover",
+    "productName": "無損自動去背",
+    "directories": { "output": "dist" },
+    "files": ["index.html", "app.js", "electron/**", "build/icon.png", "package.json"],
+    "extraResources": [{ "from": "build/data", "to": "data" }],
+    "win": {
+      "executableName": "BgRemover",
+      "target": ["nsis", "portable"],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "無損自動去背",
+      "artifactName": "BgRemover-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "BgRemover-Portable-${version}.exe"
+    }
   }
 }
