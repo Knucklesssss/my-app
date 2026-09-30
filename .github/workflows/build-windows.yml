@@ -31,12 +31,15 @@ jobs:
             dist/BgRemover-Portable-*.exe
           if-no-files-found: error
 
+      # Only main publishes the public release; other branches just upload the build artifact.
       - name: Read version
+        if: github.ref == 'refs/heads/main'
         id: version
         shell: bash
         run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Publish release
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}

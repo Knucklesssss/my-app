@@ -22,15 +22,15 @@
 
 AI 模型已內建，不用連網。因為程式沒有數位簽章，第一次執行時 Windows 可能跳出「Windows 已保護您的電腦」，按「其他資訊 → 仍要執行」即可。
 
-每次推送程式碼，GitHub Actions 都會自動重新打包（見 `.github/workflows/build-windows.yml`）。
+每次推送程式碼，GitHub Actions 都會自動重新打包（見 `.github/workflows/build-windows.yml`）；只有推送到 `main` 時才會更新 Releases。
 
-### 網頁版：GitHub Pages（手機電腦都能直接開）
+### 網頁版：GitHub Pages（手機和電腦都能直接開）
 
 1. 到倉庫的 **Settings → Pages**
 2. Source 選 **Deploy from a branch**，Branch 選 `main`，資料夾選 `/ (root)`，按 Save
 3. 等一兩分鐘後打開 `https://knucklesssss.github.io/my-app/`
 
-### 方法二：在自己電腦上執行
+### 網頁版：在自己電腦上執行
 
 需要先安裝 [Node.js](https://nodejs.org/)。
 
@@ -54,6 +54,8 @@ npm run build
 ```
 
 桌面版：`npm run desktop` 直接啟動，`npm run dist:win` 打包 Windows 安裝檔（輸出到 `dist/`）。
+
+程式圖示 `build/icon.png` 由 `npm run icon` 產生。
 
 ## 授權
 

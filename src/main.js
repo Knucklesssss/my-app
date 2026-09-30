@@ -273,5 +273,3 @@ clearBtn.addEventListener('click', () => {
   setStatus('選擇或拖放圖片開始。', null);
 });
 
-// Test hook: lets automated checks read the exact output pixels.
-window.__bgRemover = { items, composeRGBA, toPngBytes };
